@@ -1,0 +1,91 @@
+DATA:
+  PATH_TO_DATA_DIR: "data/UCF24"
+  NUM_FRAMES: 16
+  SAMPLING_RATE: 1
+  MEAN: [0.48145466, 0.4578275, 0.40821073]
+  STD: [0.26862954, 0.26130258, 0.27577711]  # from CLIPViP (same as CLIP)
+  DATASETS: ['ucf24']
+  OPEN_VOCABULARY: True
+  REFINE_VOCAB: True
+UCF24:
+  FRAME_DIR: "rgb-images"
+  OPEN_WORLD_DIR: 'openworld'
+  CW_SPLIT_FILE: 'train50%/closed_world_0.pkl'
+  OW_SPLIT_FILE: 'train50%/open_world_0_small.pkl'
+  VOCAB_REFINE: 'vocab_gpt4.json'
+  # PRIOR_BOX_FILE: 'UCF24-GDINO-top10.pkl'  # 'UCF24-MaskRCNN.pkl', 'UCF24-GDINO-top10.pkl'
+MODEL:
+  WEIGHT: null
+  BACKBONE:
+    CONV_BODY: "ViP-B/16"
+    PATHWAYS: 1
+    RESIDUAL_LATERAL: True
+  STM:
+    NUM_QUERIES: 100
+    HIDDEN_DIM: 512
+    NUM_STAGES: 3
+    ACTION_CLASSES: 10  # 50%: 10, 75%: 15
+    OBJECT_CLASSES: 1
+    NUM_HEADS: 8
+    DROPOUT: 0.0
+    DIM_FEEDFORWARD: 2048
+    NUM_FCS: 2
+    ACTIVATION: 'ReLU'
+    SPATIAL_POINTS: 32
+    TEMPORAL_POINTS: 16  # must be the same as NUM_FRAMES
+    OUT_MULTIPLIER: 4
+    N_GROUPS: 4
+    NUM_CLS: 1
+    NUM_ACT: 1
+    NUM_REG: 1
+    OBJECT_WEIGHT: 2.0
+    ACTION_WEIGHT: 8.0
+    GIOU_WEIGHT: 2.0
+    L1_WEIGHT: 2.0
+    BACKGROUND_WEIGHT: 0.1
+    INTERMEDIATE_SUPERVISION: True
+    PERSON_THRESHOLD: 0.6
+    USE_CLS_FEAT: True
+    COND_CLS: True
+    FUSE_CLS: True
+    FUSE_METHOD: 'logit_fusion'
+    FUSE_FACTOR: 0.999
+    DeST: True
+  TEXT_ENCODER: 'CLIPViP'
+  CLIPViP:
+    ARCH: ViP-B/16
+    CLIP_NAME: "openai/clip-vit-base-patch16"  # load from huggingface
+    WEIGHT: "pretrained/pretrain_clipvip_base_16.pt"
+    TEMPORAL_SIZE: 12
+    USE_TEMPORAL_EMBED: True
+    LOGIT_SCALE_INIT: 4.6
+    ADD_CLS_NUM: 3
+    CONTEXT_INIT: ''
+    LEN_CONTEXT: 24
+    CAM_METHOD: 'RITSM'
+    USE_ATTN: False
+  MULTI_LABEL_ACTION: False  # softmax
+ViT:
+  LAYER_DECAY: 1.0
+  WEIGHT_DECAY: 1e-5
+SOLVER:
+  MAX_EPOCH: 12
+  BASE_LR: 0.00001
+  WEIGHT_DECAY: 1e-4
+  STEPS: (5, 8)
+  WARMUP_FACTOR: 0.1
+  WARMUP_EPOCH: 2
+  CHECKPOINT_PERIOD: 1
+  EVAL_PERIOD: 1
+  EVAL_AFTER: 2
+  VIDEOS_PER_BATCH: 8
+  OPTIMIZING_METHOD: 'adamw'
+TEST:
+  VIDEOS_PER_BATCH: 16
+  EVAL_OPEN: True
+  METRIC: 'video_ap'
+  SMALL_OPEN_WORLD: True
+  INDEPENDENT_EVAL: True
+  IOU_THRESH: 0.2
+  # PRIOR_BOX_TEST: True
+OUTPUT_DIR: "output/ucf24/openmixer_e2e"

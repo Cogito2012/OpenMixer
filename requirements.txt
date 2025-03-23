@@ -1,0 +1,17 @@
+tqdm
+yacs
+opencv-python
+tensorboardX
+SciPy
+fvcore
+timm
+iopath
+git+https://github.com/openai/CLIP.git
+transformers
+ttach
+kornia
+scikit-learn
+scikit-image
+einops
+matplotlib
+supervision

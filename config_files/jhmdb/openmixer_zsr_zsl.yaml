@@ -1,0 +1,45 @@
+DATA:
+  PATH_TO_DATA_DIR: "data/JHMDB"
+  NUM_FRAMES: 16
+  SAMPLING_RATE: 1
+  MEAN: [0.48145466, 0.4578275, 0.40821073]
+  STD: [0.26862954, 0.26130258, 0.27577711]  # from CLIPViP (same as CLIP)
+  DATASETS: ['jhmdb']
+  OPEN_VOCABULARY: True
+  REFINE_VOCAB: True
+JHMDB:
+  FRAME_DIR: "Frames/"
+  OPEN_WORLD_DIR: 'openworld'
+  CW_SPLIT_FILE: 'train50%/closed_world_0.pkl'
+  OW_SPLIT_FILE: 'train50%/open_world_0_small.pkl'
+  SAMPLES_SPLIT: 0
+  VOCAB_REFINE: 'vocab_gpt3.5.json'
+  PRIOR_BOX_FILE: 'JHMDB-MaskRCNN.pkl'
+MODEL:
+  DET: NaiveBaseline
+  MULTI_LABEL_ACTION: False
+  PRIOR_BOXES_INIT: 'det'
+  WEIGHT: null
+  BACKBONE:
+    CONV_BODY: "ViP-B/16"
+    PATHWAYS: 1
+  STM:
+    USE_CLS_FEAT: True
+  TEXT_ENCODER: 'CLIPViP'
+  CLIPViP:
+    ARCH: ViP-B/16
+    CLIP_NAME: "openai/clip-vit-base-patch16"  # load from huggingface
+    WEIGHT: "pretrained/pretrain_clipvip_base_16.pt"
+    TEMPORAL_SIZE: 12
+    USE_TEMPORAL_EMBED: True
+    LOGIT_SCALE_INIT: 4.6
+    ADD_CLS_NUM: 3
+    # CONTEXT_INIT: 'a video of '
+    LEN_CONTEXT: 24
+TEST:
+  VIDEOS_PER_BATCH: 32
+  EVAL_OPEN: True
+  METRIC: 'video_ap'
+  SMALL_OPEN_WORLD: True
+  INDEPENDENT_EVAL: True
+OUTPUT_DIR: "output/jhmdb/openmixer_zsr_zsl"
