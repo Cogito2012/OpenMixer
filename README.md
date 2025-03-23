@@ -1,5 +1,9 @@
 # OpenMixer
-This repository released the source code of OpenMixer (WACV 2025), heavily dependent on the [STMixer](https://github.com/MCG-NJU/STMixer) codebase.
+This repository released the source code of the WACV 2025 paper [OpenMixer](https://arxiv.org/pdf/2411.10922), heavily dependent on the [STMixer](https://github.com/MCG-NJU/STMixer) codebase. OpenMixer is an open-vocabulary action detector that aims to detect any human actions from videos in an open world. The figure below shows the model architecture.
+
+<p align="center">
+<img src="assets/wacv25_openmixer.png" alt="OpenMixer" width="600px"/>
+</p>
 
 ## Installation
 - Create conda environment:  
