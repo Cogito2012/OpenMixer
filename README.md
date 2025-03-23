@@ -3,36 +3,36 @@ This repository released the source code of OpenMixer (WACV 2025), heavily depen
 
 ## Installation
 - Create conda environment:  
-      ```
-      conda create -n openmixer python=3.7
-      ```
+```bash
+conda create -n openmixer python=3.7
+```
 
 - Install pytorch:  
-      ```
-      pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu117
-      ```
+```bash
+pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu117
+```
 
 - Install other libraries (including the OpenAI-CLIP):  
-      ```bash
-      pip install -r requirements.txt
-      ```
+```bash
+pip install -r requirements.txt
+```
 
 ## Data Preparation
 - First, please refer to the MMAction2 [JHMDB](https://github.com/open-mmlab/mmaction2/blob/main/tools/data/jhmdb/README.md) and [UCF24](https://github.com/open-mmlab/mmaction2/blob/main/tools/data/ucf101_24/README.md) dataset preparation steps.
 
 - Next, please download our released [Open-World splits](https://drive.google.com/drive/folders/1Bu5GNsGIfYD-4u_7WMjBOWZj_3zs-HbJ?usp=sharing). Make sure folders are structured as follows.
-      ```
-      data
-      ├──JHMDB
-      |   ├── openworld
-      |   ├── Frames
-      |   ├── JHMDB-MaskRCNN.pkl
-      |   ├── JHMDB-GT.pkl
-      ├──UCF24
-      |   ├── openworld
-      |   ├── rgb-images
-      |   ├── UCF24-MaskRCNN.pkl
-      ```
+```bash
+data
+├──JHMDB
+|   ├── openworld
+|   ├── Frames
+|   ├── JHMDB-MaskRCNN.pkl
+|   ├── JHMDB-GT.pkl
+├──UCF24
+|   ├── openworld
+|   ├── rgb-images
+|   ├── UCF24-MaskRCNN.pkl
+```
 
 ## Models
 
@@ -44,7 +44,7 @@ This repository released the source code of OpenMixer (WACV 2025), heavily depen
 ## Training
 
 We provided an easy-to-use bash script to enable training and evaluation for different settings and datasets. For example, to train the OpenMixer model under the end-to-end setting on the JHMDB dataset using 4 specified GPUs:
-```shell
+```bash
 CUDA_VISIBLE_DEVICES=0,1,2,3 bash trainval.sh train jhmdb
 ```
 Optionally, you may change the GPU IDs and dataset name to `ucf24`. For other settings, in the `trainval.sh`, change the `CFG_FILE` to `openmixer_zsr_tl.yaml` to train OpenMixer model under the ZSR+TL setting.
@@ -52,7 +52,7 @@ Optionally, you may change the GPU IDs and dataset name to `ucf24`. For other se
 
 ## Validation
 We use the same bash script for validation (inference + evaluation)
-```shell
+```bash
 CUDA_VISIBLE_DEVICES=0,1,2,3 bash trainval.sh eval jhmdb
 ```
 Optionally, you may change the GPU IDs and dataset name to `ucf24`. For other settings, in the `trainval.sh`, change the `CFG_FILE` to `openmixer_zsr_tl.yaml` and `openmixer_zsr_zsl.yaml` for evaluating models under the ZSR+TL and ZSR+ZSL settings, respectively.

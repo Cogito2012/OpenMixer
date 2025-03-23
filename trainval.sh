@@ -10,7 +10,7 @@ CFG_FILE="config_files/${DATASET}/openmixer_e2e.yaml"
 TEST_WEIGHT=${3:-'checkpoints/model_final.pth'}
 
 eval "$(conda shell.bash hook)"
-conda activate stmixer_new
+conda activate openmixer
 
 if [ $PHASE == 'train' ]
 then
