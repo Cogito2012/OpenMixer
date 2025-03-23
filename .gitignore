@@ -8,7 +8,6 @@ output/
 *.out
 *.err
 *_temp.*
-*.png
 *.jpg
 *.jpeg
 .nfs*
